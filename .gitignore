@@ -21,3 +21,8 @@
 go.work
 
 .env
+
+tmp/
+
+# go build (binary)
+/simple-inventory-manager

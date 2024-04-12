@@ -1,3 +1,6 @@
+DROP TRIGGER IF EXISTS "Tg_ProductLocations" ON "ProductLocations";
+DROP FUNCTION IF EXISTS "Fn_ProductLocations";
+DROP TABLE IF EXISTS "ProductLocationLogs";
 DROP TABLE IF EXISTS "ProductLocations";
 DROP TABLE IF EXISTS "Locations";
 DROP TABLE IF EXISTS "LocationGroups";

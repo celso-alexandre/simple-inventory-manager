@@ -1,9 +1,14 @@
 package models
 
-import "github.com/celso-alexandre/simple-inventory-manager/db"
+import (
+	"database/sql"
+	"errors"
+
+	"github.com/celso-alexandre/simple-inventory-manager/db"
+)
 
 type Product struct {
-	ID             int    `json:"id"`
+	Id             int64  `json:"id"`
 	Uuid           string `json:"uuid"`
 	Name           string `json:"name"`
 	Barcode        string `json:"barcode"`
@@ -11,11 +16,33 @@ type Product struct {
 }
 
 func (p *Product) SaveScan() error {
+	var res *sql.Row
+	if p.Id > 0 {
+		res = db.DB.QueryRow(`
+			SELECT "id", "uuid", "name", "barcode", "productGroupId"
+			FROM "Products"
+			WHERE "id" = $1
+		`, p.Id)
+		return res.Scan(&p.Id, &p.Uuid, &p.Name, &p.Barcode, &p.ProductGroupId)
+	}
+	if p.Barcode != "" {
+		res = db.DB.QueryRow(`
+			INSERT INTO "Products" ("barcode") 
+			VALUES ($1)
+			ON CONFLICT DO UPDATE SET "barcode" = $1
+			RETURNING "id", "uuid", "name", "barcode", "productGroupId"
+		`, p.Barcode)
+		return res.Scan(&p.Id, &p.Uuid, &p.Name, &p.Barcode, &p.ProductGroupId)
+	}
+	return errors.New("id or barcode is required")
+}
+
+func (p *Product) Update() error {
 	res := db.DB.QueryRow(`
-		INSERT INTO "Products" ("name", "barcode", "productGroupId") 
-		VALUES ($1, $2, $3)
+		UPDATE "Products"
+		SET "name" = $1, "barcode" = $2, "productGroupId" = $3
+		WHERE "id" = $4
 		RETURNING "id", "uuid", "name", "barcode", "productGroupId"
-	`, p.Name, p.Barcode, p.ProductGroupId)
-	err := res.Scan(&p.ID, &p.Uuid, &p.Name, &p.Barcode, &p.ProductGroupId)
-	return err
+	`, p.Name, p.Barcode, p.ProductGroupId, p.Id)
+	return res.Scan(&p.Id, &p.Uuid, &p.Name, &p.Barcode, &p.ProductGroupId)
 }
