@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/celso-alexandre/simple-inventory-manager/middlewares"
+	"github.com/celso-alexandre/simple-inventory-manager/server/middlewares"
 	"github.com/gin-gonic/gin"
 )
 

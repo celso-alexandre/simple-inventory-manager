@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/celso-alexandre/simple-inventory-manager/middlewares"
-	"github.com/celso-alexandre/simple-inventory-manager/models"
-	"github.com/celso-alexandre/simple-inventory-manager/utils"
+	"github.com/celso-alexandre/simple-inventory-manager/server/middlewares"
+	"github.com/celso-alexandre/simple-inventory-manager/server/models"
+	"github.com/celso-alexandre/simple-inventory-manager/server/utils"
 	"github.com/gin-gonic/gin"
 )
 

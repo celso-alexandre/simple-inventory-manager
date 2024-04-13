@@ -3,7 +3,7 @@ package middlewares
 import (
 	"net/http"
 
-	"github.com/celso-alexandre/simple-inventory-manager/utils"
+	"github.com/celso-alexandre/simple-inventory-manager/server/utils"
 	"github.com/gin-gonic/gin"
 )
 

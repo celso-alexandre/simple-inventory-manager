@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/celso-alexandre/simple-inventory-manager/db"
-	"github.com/celso-alexandre/simple-inventory-manager/routes"
+	"github.com/celso-alexandre/simple-inventory-manager/server/db"
+	"github.com/celso-alexandre/simple-inventory-manager/server/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )

@@ -1,4 +1,4 @@
-module github.com/celso-alexandre/simple-inventory-manager
+module github.com/celso-alexandre/simple-inventory-manager/server
 
 go 1.22.1
 

@@ -3,8 +3,8 @@ package models
 import (
 	"database/sql"
 
-	"github.com/celso-alexandre/simple-inventory-manager/db"
-	"github.com/celso-alexandre/simple-inventory-manager/utils"
+	"github.com/celso-alexandre/simple-inventory-manager/server/db"
+	"github.com/celso-alexandre/simple-inventory-manager/server/utils"
 )
 
 type User struct {

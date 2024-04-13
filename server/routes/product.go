@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/celso-alexandre/simple-inventory-manager/middlewares"
-	"github.com/celso-alexandre/simple-inventory-manager/models"
+	"github.com/celso-alexandre/simple-inventory-manager/server/middlewares"
+	"github.com/celso-alexandre/simple-inventory-manager/server/models"
 	"github.com/gin-gonic/gin"
 )
 

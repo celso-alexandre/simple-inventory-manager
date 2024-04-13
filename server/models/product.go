@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/celso-alexandre/simple-inventory-manager/db"
+	"github.com/celso-alexandre/simple-inventory-manager/server/db"
 )
 
 type Product struct {
