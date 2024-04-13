@@ -8,11 +8,12 @@ import (
 )
 
 type Product struct {
-	Id             int64  `json:"id"`
-	Uuid           string `json:"uuid"`
-	Name           string `json:"name"`
-	Barcode        string `json:"barcode"`
-	ProductGroupId int    `json:"productGroupId"`
+	Id              int64  `json:"id"`
+	Uuid            string `json:"uuid"`
+	Name            string `json:"name"`
+	Barcode         string `json:"barcode"`
+	ProductGroupId  int    `json:"productGroupId"`
+	UpdatedByUserId int64  `json:"updatedByUserId"`
 }
 
 func (p *Product) SaveScan() error {
@@ -27,11 +28,11 @@ func (p *Product) SaveScan() error {
 	}
 	if p.Barcode != "" {
 		res = db.DB.QueryRow(`
-			INSERT INTO "Products" ("barcode") 
-			VALUES ($1)
+			INSERT INTO "Products" ("barcode", "updatedByUserId")
+			VALUES ($1, $2)
 			ON CONFLICT DO UPDATE SET "barcode" = $1
 			RETURNING "id", "uuid", "name", "barcode", "productGroupId"
-		`, p.Barcode)
+		`, p.Barcode, p.UpdatedByUserId)
 		return res.Scan(&p.Id, &p.Uuid, &p.Name, &p.Barcode, &p.ProductGroupId)
 	}
 	return errors.New("id or barcode is required")
@@ -40,9 +41,13 @@ func (p *Product) SaveScan() error {
 func (p *Product) Update() error {
 	res := db.DB.QueryRow(`
 		UPDATE "Products"
-		SET "name" = $1, "barcode" = $2, "productGroupId" = $3
+		SET "name"            = $1,
+			 "barcode"         = $2,
+			 "productGroupId"  = $3,
+			 "updatedByUserId" = $5,
+			 "updatedAt"       = now()
 		WHERE "id" = $4
 		RETURNING "id", "uuid", "name", "barcode", "productGroupId"
-	`, p.Name, p.Barcode, p.ProductGroupId, p.Id)
-	return res.Scan(&p.Id, &p.Uuid, &p.Name, &p.Barcode, &p.ProductGroupId)
+	`, p.Name, p.Barcode, p.ProductGroupId, p.Id, p.UpdatedByUserId)
+	return res.Scan(&p.Id, &p.Uuid, &p.Name, &p.Barcode, &p.ProductGroupId, &p.UpdatedByUserId)
 }

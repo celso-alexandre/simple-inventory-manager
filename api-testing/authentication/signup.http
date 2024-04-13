@@ -1,0 +1,8 @@
+POST http://localhost:3333/api/signup
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTI5Nzc3OTUsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.RJeEjTjODF1K6d959EttyP_mBY5j8IX8PTCXuBukbc4
+
+{
+  "username": "celsoalexandre",
+  "password": "1234"
+}

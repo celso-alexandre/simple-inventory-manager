@@ -1,3 +1,16 @@
+CREATE TABLE "Users" (
+    "id" SERIAL PRIMARY KEY,
+    "username" VARCHAR(255) NOT NULL UNIQUE,
+    "password" VARCHAR(255),
+    "isAdmin" BOOLEAN NOT NULL DEFAULT FALSE,
+
+    "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+    "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+    "updatedByUserId" INT,
+
+    FOREIGN KEY ("updatedByUserId") REFERENCES "Users"("id")
+);
+
 CREATE TABLE "ProductGroups" (
     "id" SERIAL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
@@ -5,7 +18,9 @@ CREATE TABLE "ProductGroups" (
     
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+    "updatedByUserId" INT NOT NULL,
 
+    FOREIGN KEY ("updatedByUserId") REFERENCES "Users"("id"),
     FOREIGN KEY ("parentId") REFERENCES "ProductGroups"("id")
 );
 
@@ -18,7 +33,9 @@ CREATE TABLE "Products" (
     
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+    "updatedByUserId" INT NOT NULL,
 
+    FOREIGN KEY ("updatedByUserId") REFERENCES "Users"("id"),
     FOREIGN KEY ("productGroupId") REFERENCES "ProductGroups"("id")
 );
 
@@ -27,7 +44,10 @@ CREATE TABLE "LocationGroups" (
     "name" VARCHAR(255) NOT NULL UNIQUE,
     
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
-    "updatedAt" TIMESTAMP NOT NULL DEFAULT now()
+    "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+    "updatedByUserId" INT NOT NULL,
+
+    FOREIGN KEY ("updatedByUserId") REFERENCES "Users"("id")
 );
 
 CREATE TABLE "Locations" (
@@ -37,7 +57,9 @@ CREATE TABLE "Locations" (
     
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+    "updatedByUserId" INT NOT NULL,
 
+    FOREIGN KEY ("updatedByUserId") REFERENCES "Users"("id"),
     FOREIGN KEY ("locationGroupId") REFERENCES "LocationGroups"("id")
 );
 
@@ -50,10 +72,12 @@ CREATE TABLE "ProductLocations" (
     
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+    "updatedByUserId" INT NOT NULL,    
 
     CONSTRAINT "ProductLocations_quantity_gte_0" check ("quantity" >= 0),
     CONSTRAINT "ProductLocations_minQuantity_gte_0" check ("minQuantity" >= 0),
 
+    FOREIGN KEY ("updatedByUserId") REFERENCES "Users"("id"),
     FOREIGN KEY ("productId") REFERENCES "Products"("id"),
     FOREIGN KEY ("locationId") REFERENCES "Locations"("id")
 );
@@ -66,8 +90,10 @@ CREATE TABLE "ProductLocationLogs" (
     "quantity" INT NOT NULL,
     
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+    "updatedByUserId" INT NOT NULL,
 
-    FOREIGN KEY ("productLocationId") REFERENCES "ProductLocations"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY ("updatedByUserId") REFERENCES "Users"("id"),
+    FOREIGN KEY ("productLocationId") REFERENCES "ProductLocations"("id") ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY ("productId") REFERENCES "Products"("id"),
     FOREIGN KEY ("locationId") REFERENCES "Locations"("id")
 );
@@ -76,20 +102,20 @@ CREATE FUNCTION "Fn_ProductLocations"()
     RETURNS TRIGGER AS $$
     BEGIN
         IF (TG_OP = 'INSERT') THEN
-            INSERT INTO "ProductLocationLogs" ("productLocationId", "productId", "locationId", "quantity")
-            VALUES (NEW."id", NEW."productId", NEW."locationId", NEW."quantity");
+            INSERT INTO "ProductLocationLogs" ("updatedByUserId", "productLocationId", "productId", "locationId", "quantity")
+            VALUES (NEW."updatedByUserId", NEW."id", NEW."productId", NEW."locationId", NEW."quantity");
             RETURN NEW;
         END IF;
 
         IF (TG_OP = 'UPDATE') THEN
-            INSERT INTO "ProductLocationLogs" ("productLocationId", "productId", "locationId", "quantity")
-            VALUES (NEW."id", NEW."productId", NEW."locationId", (NEW."quantity" - COALESCE(OLD."quantity", 0)));
+            INSERT INTO "ProductLocationLogs" ("updatedByUserId", "productLocationId", "productId", "locationId", "quantity")
+            VALUES (NEW."updatedByUserId", NEW."id", NEW."productId", NEW."locationId", (NEW."quantity" - COALESCE(OLD."quantity", 0)));
             RETURN NEW;
         END IF;
 
         IF (TG_OP = 'DELETE') THEN
-            INSERT INTO "ProductLocationLogs" ("productLocationId", "productId", "locationId", "quantity")
-            VALUES (OLD."id", OLD."productId", OLD."locationId", OLD."quantity" * -1);
+            INSERT INTO "ProductLocationLogs" ("updatedByUserId", "productId", "locationId", "quantity")
+            VALUES (OLD."updatedByUserId", OLD."productId", OLD."locationId", OLD."quantity" * -1);
             RETURN OLD;
         END IF;
 

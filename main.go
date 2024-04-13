@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/celso-alexandre/simple-inventory-manager/db"
 	"github.com/celso-alexandre/simple-inventory-manager/routes"
 	"github.com/gin-gonic/gin"
@@ -9,7 +11,14 @@ import (
 
 func main() {
 	godotenv.Load(".env")
-	db.Connect()
+	_, err := db.Connect()
+
+	if err != nil || db.DB == nil {
+		fmt.Println(err)
+		fmt.Println("Error connecting to the database")
+		return
+	}
+	fmt.Println("Connected to the database")
 
 	server := gin.Default()
 	server.LoadHTMLGlob("templates/*.html")

@@ -6,3 +6,4 @@ DROP TABLE IF EXISTS "Locations";
 DROP TABLE IF EXISTS "LocationGroups";
 DROP TABLE IF EXISTS "Products";
 DROP TABLE IF EXISTS "ProductGroups";
+DROP TABLE IF EXISTS "Users";

@@ -13,4 +13,7 @@ if [ -z "$MIGRATION_DIR" ]; then
   echo "MIGRATION_DIR is not set"
   exit 1
 fi
-migrate -path=$MIGRATION_DIR -database $DB_URL down 1
+
+COUNT=$1
+# echo $COUNT
+migrate -path=$MIGRATION_DIR -database $DB_URL down $COUNT
