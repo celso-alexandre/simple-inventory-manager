@@ -5,6 +5,7 @@ import { createContext } from 'react';
 import { storage } from '../../storage';
 
 export type User = {
+  Authorization: string;
   userId: string;
   username: string;
   // email: string;
@@ -41,7 +42,7 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   login: () => Promise.resolve(),
-  logout: () => {},
+  logout: () => { },
 });
 
 type TokenData = JwtPayload & {
@@ -54,6 +55,7 @@ export function decodeJwtToken(token: string) {
     if (!decodedToken.user.username || !decodedToken.user.username) throw new Error('Invalid token data');
     if (typeof decodedToken.user.userId !== 'number') throw new Error('Invalid user ID');
     if (typeof decodedToken.user.username !== 'string') throw new Error('Invalid username');
+    decodedToken.user.Authorization = token;
     return decodedToken;
   } catch (error) {
     console.error('Error decoding token:', error);

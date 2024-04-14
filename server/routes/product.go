@@ -20,9 +20,9 @@ func productScan(c *gin.Context) {
 		})
 		return
 	}
-	if product.Barcode == "" && product.Id <= 0 {
+	if product.Barcode == "" && product.Uuid == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "id or barcode is required",
+			"error": "uuid or barcode is required",
 		})
 		return
 	}

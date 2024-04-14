@@ -1,7 +1,7 @@
 CREATE TABLE "Users" (
     "id" SERIAL PRIMARY KEY,
-    "username" VARCHAR(255) NOT NULL UNIQUE,
-    "password" VARCHAR(255),
+    "username" TEXT NOT NULL UNIQUE,
+    "password" TEXT,
     "isAdmin" BOOLEAN NOT NULL DEFAULT FALSE,
 
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
@@ -13,7 +13,7 @@ CREATE TABLE "Users" (
 
 CREATE TABLE "ProductGroups" (
     "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(255) NOT NULL,
+    "name" TEXT NOT NULL,
     "parentId" INT,
     
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
@@ -27,8 +27,8 @@ CREATE TABLE "ProductGroups" (
 CREATE TABLE "Products" (
     "id" SERIAL PRIMARY KEY,
     "uuid" UUID NOT NULL DEFAULT uuid_generate_v4() UNIQUE,
-    "name" VARCHAR(255) NOT NULL UNIQUE,
-    "barcode" VARCHAR(255) UNIQUE,    
+    "name" TEXT NOT NULL UNIQUE,
+    "barcode" TEXT UNIQUE,    
     "productGroupId" INT NOT NULL,
     
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
@@ -41,7 +41,7 @@ CREATE TABLE "Products" (
 
 CREATE TABLE "LocationGroups" (
     "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "name" TEXT NOT NULL UNIQUE,
     
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
@@ -52,7 +52,7 @@ CREATE TABLE "LocationGroups" (
 
 CREATE TABLE "Locations" (
     "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "name" TEXT NOT NULL UNIQUE,
     "locationGroupId" INT NOT NULL,
     
     "createdAt" TIMESTAMP NOT NULL DEFAULT now(),

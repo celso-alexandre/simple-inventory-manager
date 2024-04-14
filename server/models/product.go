@@ -18,19 +18,18 @@ type Product struct {
 
 func (p *Product) SaveScan() error {
 	var res *sql.Row
-	if p.Id > 0 {
+	if p.Uuid != "" {
 		res = db.DB.QueryRow(`
 			SELECT "id", "uuid", "name", "barcode", "productGroupId"
 			FROM "Products"
-			WHERE "id" = $1
-		`, p.Id)
+			WHERE "uuid" = $1
+		`, p.Uuid)
 		return res.Scan(&p.Id, &p.Uuid, &p.Name, &p.Barcode, &p.ProductGroupId)
-	}
-	if p.Barcode != "" {
+	} else if p.Barcode != "" {
 		res = db.DB.QueryRow(`
-			INSERT INTO "Products" ("barcode", "updatedByUserId")
-			VALUES ($1, $2)
-			ON CONFLICT DO UPDATE SET "barcode" = $1
+			INSERT INTO "Products" ("barcode", "name", "updatedByUserId", "productGroupId")
+			VALUES ($1::text, $1::text, $2, (SELECT "id" FROM "ProductGroups" WHERE "name" = 'default'))
+			ON CONFLICT ("barcode") DO UPDATE SET "barcode" = $1
 			RETURNING "id", "uuid", "name", "barcode", "productGroupId"
 		`, p.Barcode, p.UpdatedByUserId)
 		return res.Scan(&p.Id, &p.Uuid, &p.Name, &p.Barcode, &p.ProductGroupId)

@@ -1,5 +1,5 @@
 import { requestCameraPermissionsAsync } from 'expo-camera';
-import { CameraProps, CameraView } from 'expo-camera/next';
+import { Camera, CameraProps, CameraView } from 'expo-camera/next';
 import { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text } from 'react-native';
 
@@ -24,6 +24,8 @@ export function CamScanner(props: CameraProps) {
 
   return (
     <CameraView
+      mode="picture"
+      facing="back"
       barcodeScannerSettings={{
         barcodeTypes: ['aztec', 'ean13', 'ean8', 'qr', 'pdf417', 'upc_e', 'datamatrix', 'code39', 'code93', 'itf14', 'codabar', 'code128', 'upc_a'],
       }}
@@ -36,6 +38,7 @@ export function CamScanner(props: CameraProps) {
               props.onBarcodeScanned?.(data);
               await new Promise((resolve) => setTimeout(resolve, 1000));
               setScanned(true);
+
               // console.log('Barcode data:', data);
               // alert(`Bar code with type ${data.type} and data ${data.data} has been scanned!`);
             }
