@@ -6,18 +6,23 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-type JwtPayload struct {
+type User struct {
 	Username string `json:"username"`
 	UserId   int64  `json:"userId"`
+}
+type JwtPayload struct {
+	User User `json:"user"`
 }
 
 const jwtSecretKey = "secret" // TODO: use env variable
 
 func GenerateJwtToken(payload JwtPayload) string {
 	claims := jwt.MapClaims{
-		"username": payload.Username,
-		"userId":   payload.UserId,
-		"exp":      time.Now().Add(time.Hour * 2).Unix(),
+		"user": map[string]interface{}{
+			"username": payload.User.Username,
+			"userId":   payload.User.UserId,
+		},
+		"exp": time.Now().Add(time.Hour * 2).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
@@ -45,7 +50,9 @@ func VerifyJwtToken(tokenString string) (JwtPayload, error) {
 	}
 	claims := parsedToken.Claims.(jwt.MapClaims)
 	return JwtPayload{
-		Username: claims["username"].(string),
-		UserId:   int64(claims["userId"].(float64)),
+		User: User{
+			Username: claims["user"].(map[string]interface{})["username"].(string),
+			UserId:   int64(claims["user"].(map[string]interface{})["userId"].(float64)),
+		},
 	}, nil
 }

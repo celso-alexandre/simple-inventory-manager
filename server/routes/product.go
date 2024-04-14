@@ -27,7 +27,7 @@ func productScan(c *gin.Context) {
 		return
 	}
 	jwtPayload := middlewares.RetrieveAuthPayload(c)
-	product.UpdatedByUserId = jwtPayload.UserId
+	product.UpdatedByUserId = jwtPayload.User.UserId
 	err = product.SaveScan()
 	if err != nil {
 		fmt.Println(err)
@@ -60,7 +60,7 @@ func productUpdate(c *gin.Context) {
 	}
 	product.Id = id
 	jwtPayload := middlewares.RetrieveAuthPayload(c)
-	product.UpdatedByUserId = jwtPayload.UserId
+	product.UpdatedByUserId = jwtPayload.User.UserId
 	err = product.Update()
 	if err != nil {
 		fmt.Println(err)

@@ -53,7 +53,12 @@ func userLogin(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
-	jwtToken := utils.GenerateJwtToken(utils.JwtPayload{Username: u.Username, UserId: u.Id})
+	jwtToken := utils.GenerateJwtToken(utils.JwtPayload{
+		User: utils.User{
+			Username: u.Username,
+			UserId:   u.Id,
+		},
+	})
 	c.JSON(http.StatusOK, gin.H{"token": jwtToken})
 }
 
@@ -65,7 +70,7 @@ func userSignup(c *gin.Context) {
 		return
 	}
 	jwtPayload := middlewares.RetrieveAuthPayload(c)
-	u.UpdatedByUserId = jwtPayload.UserId
+	u.UpdatedByUserId = jwtPayload.User.UserId
 	err = u.Create()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
