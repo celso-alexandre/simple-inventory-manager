@@ -1,0 +1,2 @@
+- [ ] Add GET /productGroups route + implement it to the mobile app (select)
+- [ ] Add GET /locations route + implement it to the mobile app (select)

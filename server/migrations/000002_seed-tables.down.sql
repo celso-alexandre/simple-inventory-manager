@@ -1,5 +1,11 @@
-DELETE FROM "Locations" WHERE "name" = 'default';
+DELETE FROM "ProductLocationLogs";
 
-DELETE FROM "LocationGroups" WHERE "name" = 'default';
+DELETE FROM "ProductLocations";
 
-DELETE FROM "ProductGroups" WHERE "name" = 'default';
+DELETE FROM "Products";
+
+DELETE FROM "Locations";
+
+DELETE FROM "LocationGroups";
+
+DELETE FROM "ProductGroups";

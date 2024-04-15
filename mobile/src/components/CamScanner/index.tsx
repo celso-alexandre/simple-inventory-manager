@@ -1,5 +1,5 @@
 import { requestCameraPermissionsAsync } from 'expo-camera';
-import { Camera, CameraProps, CameraView } from 'expo-camera/next';
+import { CameraProps, CameraView } from 'expo-camera/next';
 import { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text } from 'react-native';
 
@@ -38,43 +38,15 @@ export function CamScanner(props: CameraProps) {
               props.onBarcodeScanned?.(data);
               await new Promise((resolve) => setTimeout(resolve, 1000));
               setScanned(true);
-
-              // console.log('Barcode data:', data);
-              // alert(`Bar code with type ${data.type} and data ${data.data} has been scanned!`);
             }
       }
-    >
-      {/* <Text style={styles.description}>Scan your QR code</Text> */}
-      {/* <Text onPress={() => navigation.navigate('TempRecordStack')} style={styles.cancel}>
-          Back
-        </Text> */}
-      {/* {scanned && <Button title="Tap to Scan Again" onPress={() => setScanned(false)} />} */}
-    </CameraView>
+    />
   );
 }
 
-// const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
   },
-  // description: {
-  //   fontSize: width * 0.09,
-  //   fontWeight: 'bold',
-  //   marginTop: '30%',
-  //   textAlign: 'center',
-  //   width: '70%',
-  //   //  color: colors.purple,
-  // },
-  // cancel: {
-  //   //  backgroundColor: colors.dark,
-  //   fontSize: width * 0.05,
-  //   fontWeight: 'bold',
-  //   padding: 4,
-  //   textAlign: 'center',
-  //   width: '30%',
-  //   opacity: 0.6,
-  //   //  color: colors.purple,
-  // },
 });

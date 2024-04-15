@@ -29,8 +29,8 @@ export async function login(username: string, password: string, setUser: React.D
 }
 
 export function logout(setUser: React.Dispatch<React.SetStateAction<User | null>>) {
-  localStorage.removeItem(tokenKey);
   setUser(null);
+  storage.remove({ key: tokenKey }).then();
 }
 
 type AuthContextType = {
@@ -42,7 +42,7 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   login: () => Promise.resolve(),
-  logout: () => { },
+  logout: () => {},
 });
 
 type TokenData = JwtPayload & {

@@ -10,7 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.23.1",
+    "@react-native-async-storage/async-storage": "1.21.0",
     "@types/base-64": "^1.0.2",
     "base-64": "^1.0.0",
     "expo": "~50.0.14",
@@ -20,6 +20,9 @@
     "jwt-decode": "^4.0.0",
     "react": "18.2.0",
     "react-native": "0.73.6",
+    "react-native-floating-label-input": "^1.4.3",
+    "react-native-picker-select": "^9.1.3",
+    "react-native-reanimated": "^3.8.1",
     "react-native-storage": "^1.0.1"
   },
   "devDependencies": {

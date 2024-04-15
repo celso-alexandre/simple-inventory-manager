@@ -1,0 +1,7 @@
+POST http://localhost:3333/api/products-scan
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTMxNDE4MjAsInVzZXIiOnsidXNlcklkIjoxLCJ1c2VybmFtZSI6ImFkbWluIn19.9BUpJyAOc5AFj0QR005vCY5cLhkVbVp93S14v7CGhGk
+
+{
+  "barcode": "1234456789"
+}

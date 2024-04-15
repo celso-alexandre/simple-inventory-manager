@@ -27,7 +27,7 @@ CREATE TABLE "ProductGroups" (
 CREATE TABLE "Products" (
     "id" SERIAL PRIMARY KEY,
     "uuid" UUID NOT NULL DEFAULT uuid_generate_v4() UNIQUE,
-    "name" TEXT NOT NULL UNIQUE,
+    "name" TEXT UNIQUE,
     "barcode" TEXT UNIQUE,    
     "productGroupId" INT NOT NULL,
     
